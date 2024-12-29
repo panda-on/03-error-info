@@ -1,0 +1,6 @@
+[workspace]
+members = ["error-code", "error-code-derive"]
+resolver = "2"
+
+
+[workspace.dependencies]
