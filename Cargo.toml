@@ -4,3 +4,8 @@ resolver = "2"
 
 
 [workspace.dependencies]
+anyhow = "1"
+error-code = { path = "./error-code" }
+error-code-derive = { path = "./error-code-derive" }
+thiserror = "2.0"
+http = "1"
