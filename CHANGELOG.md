@@ -3,11 +3,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 ---
-## [unreleased]
+## [3-7-improve-macro] - 2025-01-04
 
 ### Features
 
 - support ToErrorInfo derive procedural macro - ([eff4f19](https://github.com/panda-on/03-error-info.git/commit/eff4f194a3cf0fcb04e6c58134f3ffa5de203fb9)) - Ethan
+- improve ToErrorInfo macro and use it in axum - ([f330e73](https://github.com/panda-on/03-error-info.git/commit/f330e73e30d1c43dee6d70c2da920f4c2fa5feb2)) - Ethan
 
 ### Miscellaneous Chores
 
