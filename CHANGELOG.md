@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file. See [conven
 
 ### Features
 
-- support ToErrorInfo derive procedural macro - ([eb9ba9c](https://github.com/panda-on/03-error-info.git/commit/eb9ba9c834d528406dc8f7b2984d66765a4fe609)) - Ethan
+- support ToErrorInfo derive procedural macro - ([eff4f19](https://github.com/panda-on/03-error-info.git/commit/eff4f194a3cf0fcb04e6c58134f3ffa5de203fb9)) - Ethan
 
 ### Miscellaneous Chores
 

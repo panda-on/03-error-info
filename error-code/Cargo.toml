@@ -6,8 +6,15 @@ authors = ["Ethan <liu.zy.ethan@gmail.com>"]
 license = "MIT or Apache-2.0"
 
 [dependencies]
+base64 = "0.22.1"
 error-code-derive = { workspace = true }
 
 [dev-dependencies]
 thiserror = { workspace = true }
 http = { workspace = true }
+tokio = { version = "1.42.0", features = ["rt", "rt-multi-thread", "macros", "net", "io-util"] }
+tracing = "0.1.41"
+tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
+anyhow.workspace = true
+axum = { version = "0.8.1", features = ["http2", "query", "tracing"] }
+backtrace = "0.3.74"

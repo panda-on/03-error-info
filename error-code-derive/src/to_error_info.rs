@@ -1,5 +1,5 @@
 use darling::{
-    ast::{Data, Fields},
+    ast::{Data, Fields, Style},
     util, FromDeriveInput, FromVariant,
 };
 use proc_macro2::TokenStream;
@@ -16,7 +16,6 @@ struct ToErrorInfoReceiver {
     prefix: String,
 }
 
-#[allow(dead_code)]
 #[derive(Debug, FromVariant)]
 #[darling(attributes(error_info))]
 struct ToErrorInfoVariantReceiver {
@@ -31,7 +30,6 @@ struct ToErrorInfoVariantReceiver {
 
 pub(crate) fn impl_to_error_info(input: DeriveInput) -> TokenStream {
     let ToErrorInfoReceiver {
-        // NOTE: why there is a name here?
         ident: name,
         generics,
         data: Data::Enum(variants),
@@ -47,7 +45,7 @@ pub(crate) fn impl_to_error_info(input: DeriveInput) -> TokenStream {
         .map(|variant| {
             let ToErrorInfoVariantReceiver {
                 ident,
-                fields: _,
+                fields,
                 code,
                 app_code,
                 client_msg,
@@ -55,9 +53,15 @@ pub(crate) fn impl_to_error_info(input: DeriveInput) -> TokenStream {
 
             let code = format!("{}{}", prefix, code);
 
+            let variant_code = match fields.style {
+                Style::Struct => quote! { #name::#ident { .. }},
+                Style::Tuple => quote! { #name::#ident(_)},
+                Style::Unit => quote! { #name::#ident },
+            };
+
             quote! {
-                #name::#ident(_) => {
-                    ErrorInfo::try_new(
+                #variant_code => {
+                    ErrorInfo::new(
                         #app_code,
                         #code,
                         #client_msg,
@@ -73,7 +77,7 @@ pub(crate) fn impl_to_error_info(input: DeriveInput) -> TokenStream {
         impl #generics ToErrorInfo for #name #generics {
             type T = #app_type;
 
-            fn to_error_info(&self) -> Result<ErrorInfo<Self::T>, <Self::T as std::str::FromStr>::Err>{
+            fn to_error_info(&self) -> ErrorInfo<Self::T> {
                 match self {
                     #(#match_arms),*
                 }
@@ -108,6 +112,9 @@ mod tests {
         }"#;
 
         let ast = syn::parse_str(input).unwrap();
+        let info = ToErrorInfoReceiver::from_derive_input(&ast).unwrap();
+        assert_eq!(info.ident.to_string(), "MyError");
+        assert_eq!(info.prefix, "01");
         let code = impl_to_error_info(ast);
         println!("code: {}", code);
     }
